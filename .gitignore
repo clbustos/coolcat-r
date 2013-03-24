@@ -1,0 +1,5 @@
+.RData
+.Rhistory
+*.out
+test.r
+58.pdf
