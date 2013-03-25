@@ -7,7 +7,7 @@ use is.na to deactivate it.}
   entropy(x)
 }
 \arguments{
-  \item{vector}{}
+  \item{x}{factor}
 }
 \value{
   total entropy for vector

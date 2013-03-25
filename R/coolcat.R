@@ -1,5 +1,3 @@
-
-
 # 'Pairwise Entropy
 # 'Slow....
 
@@ -19,33 +17,6 @@ pairwiseEntropy<-function(x) {
 out
 }
 
-#' Distancia de humming entre vectores
-#' Es más cómodo utilizar daisy del paquete cluster, que aparte
-#' entrega el valor estandarizado
-
-hummingDistance<-function(x,y=NULL) {
-
-if(is.null(y)) {
-x<-sapply(x,as.character)
-  n<-nrow(x)
-  z<-matrix(0,n,n)
-  colnames(z)<-rownames(x)
-  rownames(z)<-rownames(x)
-  for(i in 1:(n-1)) {
-    for(j in (i+1):n) {
-      hd<-h.dist(x[i,],x[j,])
-      z[i,j]<-hd
-      z[j,i]<-hd
-    }
-  } 
-  return(z)
-} else {
-    j.r<-na.omit(t(rbind(x,y)))
-    return(sum(j.r[,1]!=j.r[,2]))
-}
-}
-
-
 #' Coolcat!
 #' Algoritmo de clustering, basado en la entropia. 
 #' Tiene su gracia
@@ -54,8 +25,10 @@ x<-sapply(x,as.character)
 #' la función entre ambas, así que no debería ser problema.
 #' @param x dataframe
 #' @param k clusters number
-#' @param batch batch size for replacement of bad fitting points
 #' @param m.replacement proportion of point to re-place after each batch
+#' @param batch batch size for replacement of bad fitting points
+#' @param final.refitting If TRUE, will do a final refitting of all items
+#' @param trace.log If TRUE, writes a log of actions
 #' @return a partition object
 #' @export
 coolcat<-function(x,k,m.replacement=0.1,batch=100,final.refitting=T,trace.log=F) {
@@ -179,4 +152,13 @@ coolcat<-function(x,k,m.replacement=0.1,batch=100,final.refitting=T,trace.log=F)
   xx$objetive<-expectedEntropy(xx$data,xx$clustering)
   class(xx)<-c("coolcat","partition")
   xx
+}
+#' Plot coolcat object
+#' @param x coolcat object
+#' @export
+plot.coolcat<-function(x,...) {
+    devAskNewPage(T)
+    clusplot(x,...);
+    plot(x$silhoutte,...);
+    devAskNewPage(F)
 }

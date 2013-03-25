@@ -12,11 +12,16 @@
 
   \item{k}{clusters number}
 
+  \item{m.replacement}{proportion of point to re-place
+  after each batch}
+
   \item{batch}{batch size for replacement of bad fitting
   points}
 
-  \item{m.replacement}{proportion of point to re-place
-  after each batch}
+  \item{final.refitting}{If TRUE, will do a final refitting
+  of all items}
+
+  \item{trace.log}{If TRUE, writes a log of actions}
 }
 \value{
   a partition object

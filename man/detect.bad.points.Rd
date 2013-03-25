@@ -9,9 +9,9 @@
 
   \item{m}{percentage of data to refit}
 
-  \item{index}{for first element to scan}
+  \item{first}{for first element to scan}
 
-  \item{index}{for last element to scan}
+  \item{last}{for last element to scan}
 }
 \value{
   indexes for bad fit data

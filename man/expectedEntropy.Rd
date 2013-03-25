@@ -7,7 +7,7 @@
 \arguments{
   \item{x}{data.frame}
 
-  \item{vector}{with clustering}
+  \item{cluster}{factor to clustering}
 }
 \description{
   Expected entropy

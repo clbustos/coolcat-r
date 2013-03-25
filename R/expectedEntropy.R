@@ -1,6 +1,6 @@
 #' Expected entropy
 #' @param x data.frame
-#' @param vector with clustering
+#' @param cluster factor to clustering
 #' @export
 
 expectedEntropy<-function(x,cluster) {

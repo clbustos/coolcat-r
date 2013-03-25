@@ -1,9 +1,11 @@
 #' Point fitting probability
 #' Sum all the p for each attribute on a case
-pointFittingProbability<-function(xx,m,first=1,last=nrow(xx$data)) {
-    if(m<=0) {
-        return(c())
-    }
+#' @param xx coolcat object
+#' @param first index of case to start
+#' @param last index of case to finnish
+
+pointFittingProbability<-function(xx,first=1,last=nrow(xx$data)) {
+    
     clusters=factor(xx$clustering)
     clusters.c=as.character(xx$clustering)
 
