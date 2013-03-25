@@ -10,7 +10,7 @@ pointFittingProbability<-function(xx,first=1,last=nrow(xx$data)) {
     clusters.c=as.character(xx$clustering)
 
     n.row<-nrow(xx$data)
-    at<-tableByFactor(xx$data,clusters)
+    at<-lapply(tableByFactor(xx$data,clusters),log)
     p.is<-numeric(n.row)
     
     k=xx$k
@@ -35,6 +35,7 @@ pointFittingProbability<-function(xx,first=1,last=nrow(xx$data)) {
         }
         p.is[i]<-p.i
     }
+    print(p.is)
     m.p<-max(p.is)+1
     p.is[p.is==-99]<- m.p # don't mark unfitted items
     if(first>1) {p.is[1:(first-1)]<-m.p}
