@@ -1,129 +1,3 @@
-#' Entropy for a vector. 
-#' Omits NA. If you consider NA as a value itself, 
-#' use is.na to deactivate it.
-#' @param vector
-#' @return total entropy for vector
-#' @useDynLib coolcat entropy_
-#' @export
-entropy<-function(x) {
-    x<-factor(x)
-    .Call("entropy_",x);
-}
-#' Entropy, R bases
-#' Works fine, but is slow!
-entropy.r<-function(x) {
-pp<-table(factor(x))/length(x)
--sum(pp*log2(pp))
-}
-
-
-#'  Multivariate entropy
-#' E(X)=\sum_i E(X_i)
-#' @useDynLib coolcat multivariate_entropy
-#' @export
-multivariateEntropy<-function(x) {
-  if(is.factor(x)) {
-    return(entropy(x))
-  }
-  return(.Call("multivariate_entropy",x))
-#  t=0.0  
-#  for(i in 1:ncol(x)) {
-#    t=t+entropy(x[,i])
-#  }
-#  t
-}
-
-multivariateEntropy.r<-function(x) {
-  t=0.0  
-  for(i in 1:ncol(x)) {
-    t=t+entropy.r(x[,i])
-  }
-  t
-}
-
-#' Expected entropy
-#' @param x data.frame
-#' @param vector with clustering
-#' @export
-
-expectedEntropy<-function(x,cluster) {
-  clus<-factor(cluster)
-  n.r<-nrow(x)
-  x.2<-split(x,clus)
-  p.me<-sapply(x.2,function(xx) {multivariateEntropy(xx)*nrow(xx)/n.r})
-  sum(p.me)
-}
-#' Expected entropy for a partition object
-#' @param x partition object
-#' @export
-expectedEntropy.partition<-function(x) {
-    expectedEntropy(x$data,x$clustering)
-}
-#' Percentages or frequency for attribute, ordered by cluster
-#' @param x partition object
-#' @param dd data.frame with original data. If not used, use the data from partition object
-#' @param total if true, returns counts, not percentages (useful for X^2 tests)
-#' @return a list. Every dataframe with percentages has the name of the attribute
-#' @export
-
-attributesTable.partition<-function(x,dd=NULL,values="percentage") {
-    if(is.null(dd)) {
-        dd<-as.data.frame(x$data)
-    }
-    f.table<-switch(values,percentage=as.data.frame,frequency=as.table)
-    clusters<-split(dd,x$clustering)
-    n.clusters<-names(clusters)
-    out<-list()
-    for(i in colnames(dd)) {
-      vals<-unique(dd[[i]])
-      out.p<-matrix(0,length(n.clusters),length(vals))
-      rownames(out.p)<-n.clusters
-      colnames(out.p)<-c(as.character(vals))
-      for(j in 1:length(n.clusters)) {
-        n.cluster<-n.clusters[[j]]
-        clust<-clusters[[n.cluster]]
-        n.clust=switch(values,
-            percentage=nrow(clust),frequency=1
-        )
-        #print(n.clust)
-        
-        for(k in 1:length(vals)) {
-            v.k<-as.character(vals[k])
-            out.p[j,k]<- sum(as.character(clust[[i]])==v.k) / n.clust
-        }
-        out[[i]]<-f.table(out.p)
-      }
-    }
-    attr(out,"clusters")<-n.clusters
-    return(out)
-}
-
-#' Calculates the category utility function
-#' Sums the differences between conditional and marginal probabilities
-#' for each attribute
-#' @param x partition object
-#' @export
-categoryUtilityFunction<-function(x) {
-    at<-attributesTable.partition(x,values="frequency")
-    at.s<-names(at)
-    n.clusters<-length(unique(x$clustering))
-    total<-0
-    for(i in at.s) {
-        at.a<-at[[i]]
-        n<-sum(at.a)
-        # probabilidad del cluster
-        p.c<-margin.table(at.a,1)/n
-        # probabilidad condicional
-        p.avc<-prop.table(at.a,1)
-        # probabilidad marginal
-        p.av <-margin.table(at.a,2)/n
-        # matrix version
-        p.av.m<-(matrix(1,n.clusters,1)%*%p.av)
-        p.uf<-sum(p.c%*%(p.avc^2-p.av.m^2))
-        total<-total+p.uf
-    }
-    total
-}
 
 
 # 'Pairwise Entropy
@@ -184,7 +58,7 @@ x<-sapply(x,as.character)
 #' @param m.replacement proportion of point to re-place after each batch
 #' @return a partition object
 #' @export
-coolcat<-function(x,k,batch=100,m.replacement=0.1,final.refitting=T,trace.log=F) {
+coolcat<-function(x,k,m.replacement=0.1,batch=100,final.refitting=T,trace.log=F) {
   require('cluster')
   dist.1<-daisy(x)
   xx<-list(data=x, clustering=numeric(nrow(x)), k=k, m.replacement=m.replacement)
@@ -223,7 +97,6 @@ coolcat<-function(x,k,batch=100,m.replacement=0.1,final.refitting=T,trace.log=F)
   ps[m.points==max.e[1],2]<-1
   ps[m.points==max.e[2],2]<-2
   #print(ps);
-
   if(k>2) {
     for(j.act in 3:k) {
     v.max<-0
@@ -235,9 +108,9 @@ coolcat<-function(x,k,batch=100,m.replacement=0.1,final.refitting=T,trace.log=F)
         for(i in ps[ps[,2]!=0,1]) {
           jj<-min(i,j)
           ii<-max(i,j)
-          cat(jj,",",ii,":")
+          #cat(jj,",",ii,":")
           v<-out[out[,1]==jj & out[,2]==ii,]
-          cat(v,"\n")
+          #cat(v,"\n")
           if(v[3]<minn) {
             minn <- v[3]
           }
@@ -295,6 +168,7 @@ coolcat<-function(x,k,batch=100,m.replacement=0.1,final.refitting=T,trace.log=F)
         xx$clustering<-refitting(i.batch,e.batch)
       }
    }
+   
    if(final.refitting & m.replacement>0) {
     xx$clustering<-refitting(1,n.row)
    }
@@ -305,74 +179,4 @@ coolcat<-function(x,k,batch=100,m.replacement=0.1,final.refitting=T,trace.log=F)
   xx$objetive<-expectedEntropy(xx$data,xx$clustering)
   class(xx)<-c("coolcat","partition")
   xx
-}
-
-
-#' Detect bad fitting points on data
-#' @param xx partition object
-#' @param m percentage of data to refit
-#' @return indexes for bad fit data
-#' @export
-detect.bad.points<-function(xx,m,first=1,last=nrow(xx$data)) {
-    if(m<=0) {
-        return(c())
-    }
-    n.row<-nrow(xx$data)
-    at<-attributesTable.partition(xx)
-    p.is<-numeric(n.row)
-    k=xx$k
-    n.clusters<-attr(at,"clusters")
-    vals<-names(at)
-    i.f<-
-    for(i in first:last) {
-        c.i<-xx$clustering[i]
-        if(c.i==0) {
-            p.is[i]<- -99
-            next;
-        }
-        p.i<-0
-        for(j in 1:length(vals)) {
-            n.val<-vals[k]
-            tabl<-at[[n.val]]
-            p.i<-p.i+tabl[n.clusters==c.i, colnames(tabl)==xx$data[i,j]]
-            #cat(i," ")
-        }
-        p.is[i]<-p.i
-    }
-    m.p<-max(p.is)+1
-    p.is[p.is==-99]<- m.p # don't mark unfitted items
-    if(first>1) {p.is[1:(first-1)]<-m.p}
-    if(last<nrow(xx$data)) {p.is[(last+1):nrow(xx$data)]<-m.p}
-    fit.o<-order(p.is)
-    selected<-fit.o<ceiling((last-first+1)*m)
-    #print(fit.o)
-    which(selected)
-}
-
-fit.point<-function(xx,i) {
-    k<-xx$k
-    t.clusters<-c(xx$clustering[xx$clustering!=0],0)
-
-    t.data<-xx$data[c(which(xx$clustering!=0),i),]
-    i.i<-nrow(t.data)
-    en.min<-100000
-    j.min<-0
-    for(j in 1:k) {
-      t.clusters[i.i]<-j
-      en.clus<-expectedEntropy(t.data, t.clusters)
-      #cat("Cluster ",j,":",en.clus,"\n")
-      if(en.clus<en.min) {
-        en.min<-en.clus
-        j.min<-j
-      }
-      ## Todos los del cluster, más el que estoy analizando
-    }
-    j.min
-}
-
-list.clusters<-function(x) {
-  return(unique(x$clustering[x$clustering!=0]))
-}
-get.cluster<-function(x,c) {
-  x$data[x$clustering==c,]
 }

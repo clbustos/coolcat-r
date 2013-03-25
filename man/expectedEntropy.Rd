@@ -5,7 +5,7 @@
   expectedEntropy(x, cluster)
 }
 \arguments{
-  \item{x}{data.frame or matrix}
+  \item{x}{data.frame}
 
   \item{vector}{with clustering}
 }

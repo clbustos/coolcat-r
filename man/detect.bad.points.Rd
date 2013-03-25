@@ -8,6 +8,10 @@
   \item{xx}{partition object}
 
   \item{m}{percentage of data to refit}
+
+  \item{index}{for first element to scan}
+
+  \item{index}{for last element to scan}
 }
 \value{
   indexes for bad fit data

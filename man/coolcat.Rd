@@ -4,7 +4,7 @@
 \alias{coolcat-package}
 \title{coolcat}
 \usage{
-  coolcat(x, k, batch = 100, m.replacement = 0.1,
+  coolcat(x, k, m.replacement = 0.1, batch = 100,
     final.refitting = T, trace.log = F)
 }
 \arguments{

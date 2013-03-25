@@ -14,3 +14,11 @@ maintainer: Claudio Bustos<clbustos@gmail.com>
 Collate:
     'coolcat-package.r'
     'coolcat.R'
+    'entropy.R'
+    'multivariateEntropy.R'
+    'tableByFactor.R'
+    'categoryUtilityFunction.R'
+    'expectedEntropy.R'
+    'detectBadPoints.R'
+    'fitPoint.R'
+    'pointFittingProbability.R'
