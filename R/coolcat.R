@@ -85,31 +85,28 @@ coolcat<-function(x,k,m.replacement=0.1,batch=100,final.refitting=T,trace.log=F)
   if(trace.log) {cat("Second stage: Fitting points\n")}
   c.batch=1
   n.row=nrow(x)
-
-  
-
-
   for(c.batch in 1:(ceiling(n.row/batch))) {
-    
       i.batch=(c.batch-1)*batch+1
       e.batch=min(c.batch*batch,n.row)
       if(trace.log) {cat("From ",i.batch," to ",e.batch,"\n")}
       for(i in i.batch:e.batch) {
-        
         if(xx$clustering[i]==0) {
-            xx$clustering[i]<-fit.point(xx,i)
+            xx$clustering[i]<-fitPoint(xx,i)
          }
       }
       
       if(m.replacement>0) {
-        xx$clustering<-refitting(i.batch,e.batch)
+      #print(xx$clustering)
+        xx$clustering[i.batch:e.batch]<-refitPoint(xx,i.batch:e.batch,m.replacement,trace.log=trace.log)
+        #print(xx$clustering)
       }
    }
    
    if(final.refitting & m.replacement>0) {
-    xx$clustering<-refitting(1,n.row)
+    xx$clustering<-refitPoint(xx,m.replacement=m.replacement,trace.log=trace.log)
    }
-  
+   
+  #print(xx$clustering)
   
   xx$diss<-dist.1
   xx$silhoutte<-silhouette(xx$clustering,daisy(xx$data))

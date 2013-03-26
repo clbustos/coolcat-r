@@ -1,10 +1,10 @@
-#' Returns the cluster for which the point is better suited
+#' Returns the cluster for which the point is better suited.
 #' Using expectedEntropy as criteria
 #' @param xx partition object
 #' @param i number index
 #' @return number of conglomerate
 #' @export
-fit.point<-function(xx,i) {
+fitPoint<-function(xx,i) {
     k<-xx$k
     t.clusters<-c(xx$clustering[xx$clustering!=0],0)
     t.data<-xx$data[c(which(xx$clustering!=0),i),]

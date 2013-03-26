@@ -6,7 +6,7 @@
 #' @return indexes for bad fit data
 #' @export
 
-detect.bad.points<-function(xx,m,indexes=1:nrow(xx$data)) {
+detectBadPoints<-function(xx,m,indexes=1:nrow(xx$data)) {
     if(m<=0) {
         return(c())
     }
