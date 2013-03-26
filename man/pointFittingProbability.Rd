@@ -1,10 +1,10 @@
 \name{pointFittingProbability}
 \alias{pointFittingProbability}
 \title{Point fitting probability
-Sum all the p for each attribute on a case}
+Calculates the log of conditional probability for each case
+given the clustering factor.}
 \usage{
-  pointFittingProbability(xx, first = 1,
-    last = nrow(xx$data))
+  pointFittingProbability(xx, indexes = 1:nrow(xx$data))
 }
 \arguments{
   \item{xx}{coolcat object}
@@ -14,7 +14,8 @@ Sum all the p for each attribute on a case}
   \item{last}{index of case to finnish}
 }
 \description{
-  Point fitting probability Sum all the p for each
-  attribute on a case
+  Point fitting probability Calculates the log of
+  conditional probability for each case given the
+  clustering factor.
 }
 

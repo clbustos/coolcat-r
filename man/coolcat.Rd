@@ -29,10 +29,6 @@
 \description{
   coolcat
 
-  Coolcat! Algoritmo de clustering, basado en la entropia.
-  Tiene su gracia Reemplazo la búsqueda de desigualdad
-  inicial basado en entropia por una basada en Humming.
-  Estoy seguro que es monotónico creciente la función entre
-  ambas, así que no debería ser problema.
+  Coolcat! Clustering algorithm, entropy based.
 }
 

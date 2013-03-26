@@ -6,13 +6,13 @@
 #' @return indexes for bad fit data
 #' @export
 
-detect.bad.points<-function(xx,m,first=1,last=nrow(xx$data)) {
+detect.bad.points<-function(xx,m,indexes=1:nrow(xx$data)) {
     if(m<=0) {
         return(c())
     }
-    p.is<-pointFittingProbability(xx,first,last)
+    p.is<-pointFittingProbability(xx,indexes)
     fit.o<-order(p.is)
-    selected<-fit.o[1:ceiling((last-first+1)*m)]
+    selected<-fit.o[1:ceiling(length(indexes)*m)]
     selected
 }
 #detect.bad.points(xx,0.2)

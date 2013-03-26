@@ -1,7 +1,7 @@
 Package: coolcat
 Maintainer: Claudio Bustos <clbustos@gmail.com>
 Author: cdx
-Version: 1.0
+Version: 1.1
 License: GPL-3
 Title: 
 Description: 
@@ -22,3 +22,5 @@ Collate:
     'detectBadPoints.R'
     'fitPoint.R'
     'pointFittingProbability.R'
+    'pairwiseEntropy.R'
+    'refitPoint.R'

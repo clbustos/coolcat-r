@@ -2,7 +2,7 @@
 \alias{detect.bad.points}
 \title{Detect bad fitting points on data}
 \usage{
-  detect.bad.points(xx, m, first = 1, last = nrow(xx$data))
+  detect.bad.points(xx, m, indexes = 1:nrow(xx$data))
 }
 \arguments{
   \item{xx}{partition object}

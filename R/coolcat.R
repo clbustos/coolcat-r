@@ -1,28 +1,6 @@
-# 'Pairwise Entropy
-# 'Slow....
-
-pairwiseEntropy<-function(x) {
-  n<-nrow(x)
-  out<-matrix(0,n,n)
-  for(i in 1:(n-1)) {
-  cat("i:",i);
-    for(j in (i+1):n ) {
-      cat(j,",");
-      en.m.l<-multivariateEntropy(x[c(i,j),])
-      out[i,j]<-en.m.l
-      out[j,i]<-en.m.l
-    }
-    cat("\n");
-}
-out
-}
-
 #' Coolcat!
-#' Algoritmo de clustering, basado en la entropia. 
-#' Tiene su gracia
-#' Reemplazo la búsqueda de desigualdad inicial basado en entropia por
-#' una basada en Humming. Estoy seguro que es monotónico creciente
-#' la función entre ambas, así que no debería ser problema.
+#' Clustering algorithm, entropy based. 
+#'
 #' @param x dataframe
 #' @param k clusters number
 #' @param m.replacement proportion of point to re-place after each batch
@@ -108,21 +86,7 @@ coolcat<-function(x,k,m.replacement=0.1,batch=100,final.refitting=T,trace.log=F)
   c.batch=1
   n.row=nrow(x)
 
-  refitting<-function(i.batch,e.batch) {
-      if(trace.log) {cat("Searching for bad points\n")}
-      bad.points<-detect.bad.points(xx,m.replacement,first=i.batch,last=e.batch)
-      if(trace.log) {cat(length(bad.points)," points located\n")}
-      i.clust<-xx$clustering
-      xx$clustering[bad.points]<-0
-      for(i in which(xx$clustering==0)) {
-        if(i<i.batch | i>e.batch) {
-            next
-        }
-        xx$clustering[i]<-fit.point(xx,i)
-      }
-      if(trace.log) {cat(sum(i.clust[i.batch:e.batch]!=xx$clustering[i.batch:e.batch])," points re-located\n")}
-      xx$clustering
-  }
+  
 
 
   for(c.batch in 1:(ceiling(n.row/batch))) {

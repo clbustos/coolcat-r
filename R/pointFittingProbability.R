@@ -1,44 +1,47 @@
 #' Point fitting probability
-#' Sum all the p for each attribute on a case
+#' Calculates the log of conditional probability for each case
+#' given the clustering factor.
+#
 #' @param xx coolcat object
 #' @param first index of case to start
 #' @param last index of case to finnish
-
-pointFittingProbability<-function(xx,first=1,last=nrow(xx$data)) {
-    
+#' @export
+pointFittingProbability<-function(xx,indexes=1:nrow(xx$data)) {
     clusters=factor(xx$clustering)
+    # cluster como caracter
     clusters.c=as.character(xx$clustering)
-
+    clusters.cs=clusters.c[indexes]
     n.row<-nrow(xx$data)
     at<-lapply(tableByFactor(xx$data,clusters),log)
-    p.is<-numeric(n.row)
+    m.p<-1
+
+    p.is<-rep(m.p,n.row)
     
     k=xx$k
-    n.clusters<-levels(clusters)
-    vals<-names(at)
-    for(i in first:last) {
-        c.i<-clusters.c[i]
-        if(c.i=="0") {
-            p.is[i]<- -99
-            next;
+    c.data=lapply(xx$data[indexes,],as.character)
+    out<-matrix(0,length(indexes),length(names(at)))
+    # Tengo la matriz de datos. Necesito reemplazar en cada uno el valor
+    # de la probabilidad que corresponda
+    
+    for(i.var in 1:length(names(at))) {
+      n.var=names(at)[i.var]
+      
+      data.var=c.data[[n.var]]
+      at.var<-at[[n.var]]
+      rn.at.var=rownames(at.var)
+      cn.at.var=colnames(at.var)
+      for(i.clus in 1:length(rn.at.var)) {
+        n.clus=rn.at.var[i.clus]
+        for(i.val in 1:length(cn.at.var)) {
+          n.val=cn.at.var[i.val]
+          t.val=at.var[i.clus,i.val]
+          #print(data.var==n.val)
+          out[clusters.cs==n.clus & data.var==n.val, i.var]<-t.val
         }
-        p.i<-0
-        for(j in 1:length(vals)) {
-            if(is.na(xx$data[i,j])) {
-                next;
-            }
-            n.val<-vals[j]
-            tabl<-at[[n.val]]
-            #print(tabl)
-            p.i<-p.i+tabl[n.clusters==c.i, colnames(tabl)==as.character(xx$data[i,j])]
-            #cat(i,":",j,"(",n.val,")=",p.i,"\n")
-        }
-        p.is[i]<-p.i
+      }
     }
-    print(p.is)
-    m.p<-max(p.is)+1
-    p.is[p.is==-99]<- m.p # don't mark unfitted items
-    if(first>1) {p.is[1:(first-1)]<-m.p}
-    if(last<nrow(xx$data)) {p.is[(last+1):nrow(xx$data)]<-m.p}
+    p.is.pre<-rowSums(out)
+    p.is[indexes]<-p.is.pre
+    p.is[clusters.c=="0"]<-m.p
     p.is
 }
