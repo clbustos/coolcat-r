@@ -1,5 +1,5 @@
 #'  Multivariate entropy
-#' E(X)=\sum_i E(X_i)
+#' E(X)=sum_i E(X_i)
 #' @useDynLib coolcat multivariate_entropy
 #' @export
 multivariateEntropy<-function(x) {
