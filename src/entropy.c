@@ -1,7 +1,6 @@
 #include "entropy.h"
 
 SEXP entropy_(SEXP x) {
-    
     SEXP total_entropy;
     PROTECT(total_entropy = NEW_NUMERIC(1));
     double p=0.0;
