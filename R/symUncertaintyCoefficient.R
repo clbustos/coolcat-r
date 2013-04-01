@@ -14,7 +14,7 @@ symUncertaintyCoefficient<-function(x,y=NULL) {
         m<-matrix(1,k,k,dimnames=list(k.n,k.n))
         for(i in 1:(k-1)) {
             for(j in (i+1):k) {
-                val=symmetricUncertaintyCoefficient(x[,i],x[,j])
+                val=symUncertaintyCoefficient(x[,i],x[,j])
                 m[i,j]<-val
                 m[j,i]<-val
             }
