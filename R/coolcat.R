@@ -110,7 +110,7 @@ coolcat<-function(x,k,m.replacement=0.1,batch=100,final.refitting=T,trace.log=F)
   
   xx$diss<-dist.1
   xx$silhoutte<-silhouette(xx$clustering,daisy(xx$data))
-  xx$objetive<-expectedEntropy(xx$data,xx$clustering)
+  xx$objetive<-expectedEntropy(xx$data,factor(xx$clustering))
   class(xx)<-c("coolcat","partition")
   xx
 }

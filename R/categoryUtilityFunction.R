@@ -1,12 +1,13 @@
 #' Calculates the category utility function
 #' Sums the differences between conditional and marginal probabilities
 #' for each attribute
-#' @param x partition object
+#' @param d data
+#' @param c clustering vector
 #' @export
-categoryUtilityFunction<-function(x) {
-    at<-tableByFactor(x$data,x$clustering,values="frequency")
+categoryUtilityFunction<-function(d,g) {
+    at<-tableByFactor(d,g,values="frequency")
     at.s<-names(at)
-    n.clusters<-length(unique(x$clustering))
+    n.clusters<-nlevels(factor(g))
     total<-0
     for(i in at.s) {
         at.a<-at[[i]]

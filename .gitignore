@@ -2,4 +2,5 @@
 .Rhistory
 *.out
 test.r
+test.R
 58.pdf
