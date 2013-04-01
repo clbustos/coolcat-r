@@ -6,7 +6,9 @@
 #include <Rmath.h>
 #include <R_ext/BLAS.h>
 #endif /* ENTROPY_H */
-SEXP entropy_(SEXP x);
 double entropy(int *values, int n, int levels);
-SEXP conditional_entropy(SEXP y, SEXP x);
-SEXP multivariate_entropy(SEXP x);
+
+SEXP entropy_(SEXP x);
+SEXP conditional_entropy_(SEXP y, SEXP x);
+SEXP multivariate_entropy_(SEXP x);
+SEXP conditional_multivariate_entropy_(SEXP df, SEXP x);

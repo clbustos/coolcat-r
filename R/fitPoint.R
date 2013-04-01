@@ -6,7 +6,7 @@
 #' @export
 fitPoint<-function(xx,i) {
     k<-xx$k
-    t.clusters<-c(xx$clustering[xx$clustering!=0],0)
+    t.clusters<-factor(c(xx$clustering[xx$clustering!=0],0))
     t.data<-xx$data[c(which(xx$clustering!=0),i),]
     i.i<-nrow(t.data)
     en.min<-100000

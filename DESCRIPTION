@@ -24,4 +24,4 @@ Collate:
     'pointFittingProbability.R'
     'pairwiseEntropy.R'
     'refitPoint.R'
-    'symmetricUncertaintyCoefficient.R'
+    'symUncertaintyCoefficient.R'
