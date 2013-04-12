@@ -4,10 +4,12 @@
 Sums the differences between conditional and marginal probabilities
 for each attribute}
 \usage{
-  categoryUtilityFunction(x)
+  categoryUtilityFunction(d, g)
 }
 \arguments{
-  \item{x}{partition object}
+  \item{d}{data}
+
+  \item{c}{clustering vector}
 }
 \description{
   Calculates the category utility function Sums the
