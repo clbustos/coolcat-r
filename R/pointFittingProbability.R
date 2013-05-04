@@ -6,7 +6,7 @@
 #' @param first index of case to start
 #' @param last index of case to finnish
 #' @export
-pointFittingProbability<-function(xx,indexes=1:nrow(xx$data)) {
+pointFittingProbability<-function(xx, indexes=1:nrow(xx$data)) {
     clusters=factor(xx$clustering)
     # cluster como caracter
     clusters.c=as.character(xx$clustering)
